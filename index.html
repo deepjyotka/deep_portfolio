@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Deepjyot Kaur — Project Manager & Scrum Master</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── RESET & BASE ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0c;
+      --bg2:       #111115;
+      --bg3:       #18181e;
+      --line:      #232330;
+      --muted:     #4a4a5e;
+      --body:      #9898b0;
+      --light:     #d4d4e8;
+      --white:     #f0f0f8;
+      --accent:    #c9a96e;
+      --accent2:   #7b6fa0;
+      --accent-glow: rgba(201,169,110,0.12);
+
+      --font-display: 'Cormorant Garamond', serif;
+      --font-ui:      'Syne', sans-serif;
+      --font-mono:    'DM Mono', monospace;
+
+      --max-w: 1100px;
+      --section-pad: 120px 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--body);
+      font-family: var(--font-ui);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    /* ── SCROLLBAR ────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
+
+    /* ── LAYOUT HELPERS ───────────────────────────── */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    section { padding: var(--section-pad); }
+
+    /* ── NOISE OVERLAY ────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ──────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid transparent;
+      transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(10,10,12,0.88);
+      backdrop-filter: blur(16px);
+      border-color: var(--line);
+    }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 1.5px;
+      background: var(--body);
+      transition: all 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4.5px,-4.5px); }
+
+    /* Mobile nav overlay */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,10,12,0.97);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 36px;
+      color: var(--light);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--accent); }
+
+    /* ── HERO ─────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      padding: 0 40px;
+      overflow: hidden;
+    }
+
+    /* Grid lines background */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.3;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    /* Glowing orb */
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: 20%; left: 60%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(201,169,110,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px solid rgba(201,169,110,0.25);
+      padding: 6px 14px;
+      border-radius: 2px;
+      margin-bottom: 40px;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(64px, 10vw, 130px);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-tagline {
+      font-family: var(--font-display);
+      font-size: clamp(18px, 2.5vw, 28px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--body);
+      margin-top: 24px;
+      margin-bottom: 50px;
+      max-width: 560px;
+      line-height: 1.5;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 14px 36px;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+    .btn-primary:hover {
+      background: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      display: inline-block;
+      padding: 14px 36px;
+      color: var(--light);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      border: 1px solid var(--line);
+      transition: all 0.2s ease;
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 40px; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      animation: fadeUp 1s 0.6s ease both;
+    }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollDown 2s ease infinite;
+    }
+    @keyframes scrollDown {
+      0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* Fade up animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTION HEADERS ──────────────────────────── */
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+      max-width: 60px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 5vw, 64px);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .section-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* ── DIVIDER LINE ─────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--line);
+    }
+
+    /* ── ABOUT ────────────────────────────────────── */
+    #about { background: var(--bg); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      margin-top: 60px;
+    }
+
+    .about-text p {
+      color: var(--body);
+      font-size: 16px;
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+    .about-text p strong {
+      color: var(--light);
+      font-weight: 500;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 40px;
+    }
+    .stat-box {
+      background: var(--bg2);
+      border: 1px solid var(--line);
+      padding: 28px 24px;
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 52px;
+      font-weight: 300;
+      color: var(--accent);
+      line-height: 1;
+      display: block;
+    }
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+      display: block;
+    }
+
+    .about-right {}
+
+    .cert-list {
+      margin-top: 0;
+    }
+    .cert-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .cert-item:first-child { border-top: 1px solid var(--line); }
+    .cert-icon {
+      width: 36px; height: 36px;
+      background: var(--accent-glow);
+      border: 1px solid rgba(201,169,110,0.2);
+      border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+    .cert-title {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--light);
+      margin-bottom: 2px;
+    }
+    .cert-org {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── PROJECTS ─────────────────────────────────── */
+    #projects { background: var(--bg); }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      margin-top: 60px;
+    }
+
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--line);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s ease, background 0.3s ease;
+      cursor: default;
+    }
+    .project-card:hover {
+      border-color: var(--accent);
+      background: var(--bg3);
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-number {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      margin-bottom: 20px;
+    }
+
+    .project-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .project-desc {
+      font-size: 14px;
+      color: var(--body);
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+
+    .project-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      border: 1px solid rgba(201,169,110,0.2);
+      padding: 3px 10px;
+      border-radius: 2px;
+      letter-spacing: 0.06em;
+    }
+
+    .project-outcomes {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .project-outcomes li {
+      font-size: 13px;
+      color: var(--body);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .project-outcomes li::before {
+      content: '→';
+      color: var(--accent);
+      font-size: 12px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    /* Wide card */
+    .project-card.wide {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    .project-card.wide .project-body {}
+    .project-card.wide .project-side {
+      border-left: 1px solid var(--line);
+      padding-left: 40px;
+    }
+
+    /* ── TOOLS ────────────────────────────────────── */
+    #tools { background: var(--bg2); }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 60px;
+    }
+
+    .tool-category {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      padding: 32px;
+      transition: border-color 0.3s;
+    }
+    .tool-category:hover { border-color: var(--accent2); }
+
+    .tool-cat-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tool-items {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tool-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--light);
+    }
+    .tool-item::before {
+      content: '';
+      width: 5px; height: 5px;
+      background: var(--accent2);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .tool-item-note {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    /* ── CONTACT ──────────────────────────────────── */
+    #contact { background: var(--bg); }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      margin-top: 60px;
+    }
+
+    .contact-left .contact-lead {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--light);
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      background: var(--bg2);
+      border: 1px solid var(--line);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      group: true;
+    }
+    .contact-link:hover {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+    .contact-link-icon {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .contact-link-body {}
+    .contact-link-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+    }
+    .contact-link-value {
+      font-size: 14px;
+      color: var(--light);
+      margin-top: 2px;
+      display: block;
+    }
+    .contact-link-arrow {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 18px;
+      transition: all 0.2s;
+    }
+    .contact-link:hover .contact-link-arrow {
+      color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .contact-right {}
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .form-group input,
+    .form-group textarea {
+      background: var(--bg2);
+      border: 1px solid var(--line);
+      color: var(--light);
+      font-family: var(--font-ui);
+      font-size: 14px;
+      padding: 14px 16px;
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--muted); }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--accent); }
+
+    .form-group textarea { min-height: 120px; }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      align-self: flex-start;
+    }
+    .btn-submit:hover {
+      background: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ───────────────────────────────────── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--line);
+      padding: 32px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-name {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+    }
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── REVEAL ANIMATION ─────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── RESPONSIVE ───────────────────────────────── */
+    @media (max-width: 900px) {
+      :root { --section-pad: 80px 0; }
+      .container { padding: 0 24px; }
+      nav { padding: 18px 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      #hero { padding: 0 24px; }
+      .hero-name { font-size: clamp(52px, 12vw, 80px); }
+
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card.wide { grid-column: span 1; grid-template-columns: 1fr; }
+      .project-card.wide .project-side {
+        border-left: none;
+        border-top: 1px solid var(--line);
+        padding-left: 0;
+        padding-top: 28px;
+      }
+
+      .tools-grid { grid-template-columns: 1fr 1fr; }
+
+      .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+      .form-row { grid-template-columns: 1fr; }
+
+      footer { flex-direction: column; align-items: flex-start; gap: 12px; }
+    }
+
+    @media (max-width: 560px) {
+      .tools-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      .hero-cta-row { flex-direction: column; }
+      .btn-primary, .btn-ghost { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo">DK /</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about"    onclick="closeMobile()">About</a>
+    <a href="#projects" onclick="closeMobile()">Projects</a>
+    <a href="#tools"    onclick="closeMobile()">Tools</a>
+    <a href="#contact"  onclick="closeMobile()">Contact</a>
+  </div>
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">Project Manager &amp; Scrum Master</div>
+      <h1 class="hero-name">Deepjyot<br/><em>Kaur</em></h1>
+      <p class="hero-tagline">Turning complexity into clarity — leading teams, delivering outcomes, and building the bridges between vision and execution.</p>
+      <div class="hero-cta-row">
+        <a href="#projects" class="btn-primary">View Work</a>
+        <a href="#contact"  class="btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section id="about">
+    <div class="container">
+      <p class="section-label reveal">About Me</p>
+      <h2 class="section-title reveal reveal-delay-1">Clarity. <em>Momentum.</em><br/>Delivery.</h2>
+
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>I'm <strong>Deepjyot Kaur</strong>, a certified Project Manager and Scrum Master with a passion for building high-performing teams and delivering projects that matter. I thrive at the intersection of people, process, and product.</p>
+          <p>With hands-on experience leading cross-functional teams in fast-paced environments, I bring structure without rigidity — fostering collaboration, removing blockers, and keeping stakeholders aligned through every sprint and milestone.</p>
+          <p>My approach is grounded in <strong>servant leadership</strong>: I believe the best PMs are the ones who make everyone else's job easier. Whether it's facilitating a retrospective or managing a complex multi-phase program, I bring the same focus on outcomes and continuous improvement.</p>
+
+          <div class="about-stats">
+            <div class="stat-box">
+              <span class="stat-num">15+</span>
+              <span class="stat-label">Years Experience</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num">25+</span>
+              <span class="stat-label">Projects Delivered</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num">5</span>
+              <span class="stat-label">Certifications</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num">5+</span>
+              <span class="stat-label">Industries Served</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-right reveal reveal-delay-2">
+          <p class="section-label">Certifications</p>
+          <div class="cert-list">
+            <div class="cert-item">
+              <div class="cert-icon">📋</div>
+              <div>
+                <div class="cert-title">PMP — Project Management Professional</div>
+                <div class="cert-org">Project Management Institute (PMI)</div>
+              </div>
+            </div>
+            <div class="cert-item">
+              <div class="cert-icon">🔄</div>
+              <div>
+                <div class="cert-title">CSM — Certified Scrum Master</div>
+                <div class="cert-org">Scrum Alliance</div>
+              </div>
+            </div>
+            <div class="cert-item">
+              <div class="cert-icon">🚀</div>
+              <div>
+                <div class="cert-title">CSPO - Certified Scrum Product Owner</div>
+                <div class="cert-org">Scrum Alliance</div>
+              </div>
+            </div>
+            <div class="cert-item">
+              <div class="cert-icon">☁️</div>
+              <div>
+                <div class="cert-title">AWS Certified Cloud Practitioner</div>
+                <div class="cert-org">AWS</div>
+              </div>
+            </div>
+            <div class="cert-item">
+              <div class="cert-icon">☁️</div>
+              <div>
+                <div class="cert-title">AWS Certified AI Practitioner</div>
+                <div class="cert-org">AWS</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── PROJECTS ── -->
+  <section id="projects">
+    <div class="container">
+      <p class="section-label reveal">Selected Projects</p>
+      <h2 class="section-title reveal reveal-delay-1">Work that<br/><em>moved the needle</em></h2>
+
+      <div class="projects-grid">
+
+        <!-- Project 1 -->
+        <div class="project-card reveal">
+          <div class="project-number">01 / Major Project</div>
+          <h3 class="project-title">Major International Feature Delivery</h3>
+          <p class="project-desc">Led end-to-end delivery of a major international product feature spanning 6 departments and 3 external vendor teams. Managed scope, risk, budget, and stakeholder communications across an 18-month program. </p>
+          <div class="project-meta">
+            <span class="project-tag">Program Management</span>
+            <span class="project-tag">Agile</span>
+            <span class="project-tag">Stakeholder Mgmt</span>
+          </div>
+          <ul class="project-outcomes">
+            <li>Delivered on-time within a $2M budget</li>
+            <li>Reduced process cycle time by 35%</li>
+            <li>Coordinated 4 parallel workstreams</li>
+          </ul>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="project-card reveal reveal-delay-1">
+          <div class="project-number">02 / Agile Delivery</div>
+          <h3 class="project-title">Product Launch — Mobile Platform</h3>
+          <p class="project-desc">Served as Scrum Master and Project Manager for a cross-functional product team delivering mobile features from MVP to full launch. Facilitated all Scrum ceremonies, coached team on Agile practices, and drove continuous improvement.</p>
+          <div class="project-meta">
+            <span class="project-tag">Scrum</span>
+            <span class="project-tag">Product Delivery</span>
+            <span class="project-tag">SaaS</span>
+          </div>
+          <ul class="project-outcomes">
+            <li>0–launch in 6 sprints (12 weeks)</li>
+            <li>Increased team velocity by 28%</li>
+            <li>Zero critical defects at go-live</li>
+          </ul>
+        </div>
+
+        <!-- Project 3 — Wide -->
+        <div class="project-card wide reveal">
+          <div class="project-body">
+            <div class="project-number">03 / Process Improvement</div>
+            <h3 class="project-title">Agile Transformation & Coaching</h3>
+            <p class="project-desc">Participated in a department wide Agile transformation for a 50-person division. Designed and delivered training programs, established Centers of Excellence, and coached 8 product teams through the transition from waterfall to SAFe.</p>
+            <div class="project-meta">
+              <span class="project-tag">SAFe</span>
+              <span class="project-tag">Coaching</span>
+              <span class="project-tag">Change Management</span>
+              <span class="project-tag">Training</span>
+            </div>
+          </div>
+          <div class="project-side">
+            <p class="section-label" style="margin-bottom:20px;">Key Outcomes</p>
+            <ul class="project-outcomes">
+              <li>4 teams migrated to Agile in under 6 months</li>
+              <li>Improved release predictability by 50%</li>
+              <li>Established PI planning cadence for 50+ team members</li>
+              <li>Reduced time-to-market by 25% within one year</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="project-card reveal">
+          <div class="project-number">04 / Startup</div>
+          <h3 class="project-title">FMCG Startup Program</h3>
+          <p class="project-desc">Managed a startup right from its inception to launch and delivery of the goods Coordinated with vendors, marketing, software, IT teams to ensure smooth startup execution.</p>
+          <div class="project-meta">
+            <span class="project-tag">Driving delivery from start to finish</span>
+            <span class="project-tag">Product Devlopment</span>
+            <span class="project-tag">Cross coordination with various departments</span>
+          </div>
+          <ul class="project-outcomes">
+            <li>Accelerated go-to-market timeline</li>
+            <li>Optimized operational efficiency and cost control</li>
+            <li>Enabled faster decision-making and reduced execution bottlenecks</li>
+          </ul>
+        </div>
+
+      </div><!-- /projects-grid -->
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── TOOLS ── -->
+  <section id="tools">
+    <div class="container">
+      <p class="section-label reveal">Tools & Technologies</p>
+      <h2 class="section-title reveal reveal-delay-1">My <em>toolkit</em></h2>
+
+      <div class="tools-grid">
+
+        <div class="tool-category reveal">
+          <div class="tool-cat-label">Project Management</div>
+          <div class="tool-items">
+            <div class="tool-item">Jira <span class="tool-item-note">Advanced</span></div>
+            <div class="tool-item">Microsoft Project <span class="tool-item-note">Advanced</span></div>
+            <div class="tool-item">Confluence <span class="tool-item-note">Proficient</span></div>
+            <div class="tool-item">Planview <span class="tool-item-note">Proficient</span></div>
+            <div class="tool-item">Smartsheet <span class="tool-item-note">Intermediate</span></div>
+            
+          </div>
+        </div>
+
+        <div class="tool-category reveal reveal-delay-1">
+          <div class="tool-cat-label">Agile & Scrum</div>
+          <div class="tool-items">
+            <div class="tool-item">Scrum / SAFe <span class="tool-item-note">Expert</span></div>
+            <div class="tool-item">Kanban <span class="tool-item-note">Expert</span></div>
+            <div class="tool-item">Confluence <span class="tool-item-note">Advanced</span></div>
+            <div class="tool-item">Azure DevOps <span class="tool-item-note">Proficient</span></div>
+            
+          </div>
+        </div>
+
+        <div class="tool-category reveal reveal-delay-2">
+          <div class="tool-cat-label">Collaboration</div>
+          <div class="tool-items">
+            <div class="tool-item">Microsoft Teams <span class="tool-item-note">Advanced</span></div>
+            <div class="tool-item">Slack <span class="tool-item-note">Advanced</span></div>
+            <div class="tool-item">Miro / Mural <span class="tool-item-note">Proficient</span></div>
+            <div class="tool-item">SharePoint <span class="tool-item-note">Proficient</span></div>
+            <div class="tool-item">Zoom <span class="tool-item-note">Advanced</span></div>
+            
+          </div>
+        </div>
+
+        <div class="tool-category reveal">
+          <div class="tool-cat-label">Reporting & Analytics</div>
+          <div class="tool-items">
+            <div class="tool-item">Smartsheets <span class="tool-item-note">Proficient</span></div>
+            <div class="tool-item">Excel / Google Sheets <span class="tool-item-note">Advanced</span></div>
+            <div class="tool-item">Powerpoint <span class="tool-item-note">Intermediate</span></div>
+            <div class="tool-item">Power Automate <span class="tool-item-note">Proficient</span></div>
+            
+          </div>
+        </div>
+
+        <div class="tool-category reveal reveal-delay-1">
+          <div class="tool-cat-label">Methodologies</div>
+          <div class="tool-items">
+            <div class="tool-item">Agile / Scrum</div>
+            <div class="tool-item">Waterfall / PMBOK</div>
+            <div class="tool-item">Hybrid Delivery</div>
+          </div>
+        </div>
+
+        <div class="tool-category reveal reveal-delay-2">
+          <div class="tool-cat-label">Soft Skills</div>
+          <div class="tool-items">
+            <div class="tool-item">Stakeholder Management</div>
+            <div class="tool-item">Risk & Issue Management</div>
+            <div class="tool-item">Executive Communication</div>
+            <div class="tool-item">Servant Leadership</div>
+            <div class="tool-item">Facilitation & Coaching</div>
+            
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <div class="container">
+      <p class="section-label reveal">Get in Touch</p>
+      <h2 class="section-title reveal reveal-delay-1">Let's work<br/><em>together</em></h2>
+
+      <div class="contact-inner">
+        <div class="contact-left reveal">
+          <p class="contact-lead">Whether you have a project that needs a steady hand or an organization looking to level up its delivery — I'd love to connect.</p>
+
+          <div class="contact-links">
+            <a href="mailto:deepjyotk@gmail.com" class="contact-link">
+              <div class="contact-link-icon">✉️</div>
+              <div class="contact-link-body">
+                <span class="contact-link-label">Email</span>
+                <span class="contact-link-value">deepjyotk@gmail.com</span>
+              </div>
+              <span class="contact-link-arrow">→</span>
+            </a>
+            <a href="https://linkedin.com/in/deepjyotkaur" target="_blank" class="contact-link">
+              <div class="contact-link-icon">🔗</div>
+              <div class="contact-link-body">
+                <span class="contact-link-label">LinkedIn</span>
+                <span class="contact-link-value">linkedin.com/in/deepjyotkaur</span>
+              </div>
+              <span class="contact-link-arrow">→</span>
+            </a>
+            <a href="tel:+1-000-000-0000" class="contact-link">
+              <div class="contact-link-icon">📱</div>
+              <div class="contact-link-body">
+                <span class="contact-link-label">Phone</span>
+                <span class="contact-link-value">+1 (365) 228-9153</span>
+              </div>
+              <span class="contact-link-arrow">→</span>
+            </a>
+            <div class="contact-link" style="cursor:default;">
+              <div class="contact-link-icon">📍</div>
+              <div class="contact-link-body">
+                <span class="contact-link-label">Location</span>
+                <span class="contact-link-value">GTA, Ontario, Canada</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-right reveal reveal-delay-2">
+          <form action="mailto:deepjyotk@gmail.com" method="post" enctype="text/plain">
+
+          <div class="contact-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fname">First Name</label>
+                <input type="text" id="fname" placeholder="Jane" />
+              </div>
+              <div class="form-group">
+                <label for="lname">Last Name</label>
+                <input type="text" id="lname" placeholder="Smith" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" placeholder="jane@company.com" />
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" placeholder="Project inquiry / Consulting / Other" />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" placeholder="Tell me about your project or how I can help…"></textarea>
+            </div>
+            <button class="btn-submit" type="submit" value="submit">
+              Send Message
+              <span>→</span>
+            </button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <span class="footer-name">Deepjyot Kaur</span>
+    <span class="footer-copy">© 2025 · All rights reserved</span>
+    <div class="footer-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </footer>
+
+  <!-- ── SCRIPTS ── -->
+  <script>
+    // Nav scroll style
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
